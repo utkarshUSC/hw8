@@ -15,6 +15,12 @@ app.use(cors({
     origin: '*'
 }));
 
+app.use(express.static(process.cwd()+"/yelp-business/dist/yelp-business/"));
+
+app.get('/', (req,res) => {
+    res.sendFile(process.cwd()+"/yelp-business/dist/yelp-business/index.html")
+  });
+
 var yelp_api_url_business = {
     'base_request': 'https://api.yelp.com/v3/businesses',
     'Bearer Token': 'b8XpVjk4LvcP1DO19qRsgFVnBpuc2zNYF2aIhIRz4WmpnSQlfac6nm1kJGwap_X1oFzEkk8iJdU6lBQ4JRoRBZHdh7arNmmRcrTB_p9j29jMF4e_fTPRYB1IBJknY3Yx'
