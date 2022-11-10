@@ -215,16 +215,14 @@ export class SearchComponent implements OnInit {
       statusDiv.classList.add('text-sucess');
     }
     this.bMoreInfo = this.infoData['info_url']
-    this.bPrice = this.infoData['price']
+    this.bPrice = this.infoData['price'];
 
-    console.log(this.infoData['photos'])
+    this.photos = this.infoData['photos'];
     this.photos0 = this.infoData['photos'][0];
     this.photos1 = this.infoData['photos'][1];
     this.photos2 = this.infoData['photos'][2];
-    console.log(this.photos0)
-    console.log(this.photos1)
-    console.log(this.photos2)
-    this.photos = this.infoData['photos']
+
+   
   }
 
   async submit(form: NgForm) {
