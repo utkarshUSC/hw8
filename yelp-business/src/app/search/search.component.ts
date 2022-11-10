@@ -143,7 +143,7 @@ export class SearchComponent implements OnInit {
           this.filteredKws = [];
           this.isLoading = true;
         }),
-        switchMap(value => this.http.get('https://webapp-4mk5cto4oa-wl.a.run.app/get_autocomplete_words' + '?kw=' + value)
+        switchMap(value => this.http.get('https://hw8-pujnonsk3a-uc.a.run.app/get_autocomplete_words' + '?kw=' + value)
           .pipe(
             finalize(() => {
               this.isLoading = false
@@ -165,7 +165,7 @@ export class SearchComponent implements OnInit {
   }
  
   async prepareReview(bId: string) {
-    var resp = await axios.get("https://webapp-4mk5cto4oa-wl.a.run.app/get_business_reviews", { params: { 'id': bId } });
+    var resp = await axios.get("https://hw8-pujnonsk3a-uc.a.run.app/get_business_reviews", { params: { 'id': bId } });
     if (resp.status != 200) {
       alert('Sorry! Not much information available on this business');
       return;
@@ -186,7 +186,7 @@ export class SearchComponent implements OnInit {
   async prepareDataset(bId: string, bName: string) {
     var divTable = document.getElementById('searchTable') as HTMLTableElement;
     divTable.classList.add('d-none');
-    var resp = await axios.get("https://webapp-4mk5cto4oa-wl.a.run.app/get_business_info", { params: { 'id': bId } });
+    var resp = await axios.get("https://hw8-pujnonsk3a-uc.a.run.app/get_business_info", { params: { 'id': bId } });
     if (resp.status != 200) {
       alert('Sorry! Not much information available on this business');
       return;
@@ -247,7 +247,7 @@ export class SearchComponent implements OnInit {
       'location': location,
       'ip': ip,
     }
-    var resp_business = await axios.get('https://webapp-4mk5cto4oa-wl.a.run.app/get_businesses/', { params: obj });
+    var resp_business = await axios.get('https://hw8-pujnonsk3a-uc.a.run.app/get_businesses/', { params: obj });
     var notFound = document.getElementById('noResult') as HTMLDivElement;
     if (resp_business.status != 200) {
       notFound.classList.remove('d-none');
