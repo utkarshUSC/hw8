@@ -1,0 +1,12 @@
+
+.backDiv {
+    background-image:-webkit-linear-gradient(rgba(29, 37, 113, 0.138), rgba(195, 55, 99, 0.114)), url('../assets/city.jpg') ;
+    height:100%;
+    overflow-y: scroll;
+    background-size: cover;
+    /* background: linear-gradient(2deg, rgba(255, 255, 255, 0), rgba(198, 198, 255, 0)); */
+}
+
+.navs {
+    z-index: 10000;
+}

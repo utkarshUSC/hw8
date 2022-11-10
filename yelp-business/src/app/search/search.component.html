@@ -1,0 +1,271 @@
+
+   
+    <div class="container">  
+        <div class="container d-flex justify-content-center bg-white col-5 mt-4 pt-5" id="maincontainer">
+            <form id="business-search" #form="ngForm" (ngSubmit)="submit(form)" class="col-10"  ngNativeValidate >
+                
+                <div class="form-heading"><h6 class="text-center">Business Search</h6></div>
+                
+                    <div class="form-group form-row">
+                        <label for="Keyword" class="form-label required">Keyword</label>
+                        <input matInput [(ngModel)]="selectedKw"  [matAutocomplete]="auto" [formControl]="searchCtrl" id="kw" class="form-control" required >
+                        <mat-autocomplete  #auto="matAutocomplete" (optionSelected)="onSelected()" >
+                        <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                        <ng-container *ngIf="!isLoading">
+                            <mat-option *ngFor="let kw of filteredKws" [value]="kw">
+                            <span><b>{{kw}}</b></span>
+                            </mat-option>
+                        </ng-container>
+                        </mat-autocomplete>
+                    </div>
+    
+                <div class="form-group row">
+                    <div class="form-group col-6">
+                        <label for="Distance" class="form-label" >Distance</label>
+                        <input [(ngModel)]="distance" id="d" type="text" name="distance" class="form-control" pattern="\d*" value=10>
+                    </div>
+                    <div class="form-group col-5">
+                        <label for="Category" class="form-label">Category</label>
+                        <select name="category" class="form-control" id="c">
+                            <option selected value="All">Default</option>
+                            <option value="Arts & Entertainment">Arts & Entertainment</option>
+                            <option value="Health & Medical">Health & Medical</option>
+                            <option value="Hotels & Travel">Hotels & Travel</option>
+                            <option value="Food">Food</option>
+                            <option value="Professional Services">Professional Services</option>
+                          </select>
+                    </div>
+                </div>
+    
+                <div class="form-group form-row">
+                    <label for="Location" class="form-label required">Location</label>
+                    <input type="text"  class="form-control" id="location" required >
+                </div>
+    
+                <div class="form-check form-group form-row">
+                    <label for="auto_location" class="form-label">Auto-detect my location</label>
+                    <input type="checkbox" (click)="enableCheckbox()"  name="autoLoc" class="form-check-input" id="check" ngModel>    
+                </div>
+    
+                <div class="form-group form-row pt-2 pb-4 text-center">
+                    <button type="submit" class="btn btn-danger" value="submit">Submit</button>
+                    &nbsp; &nbsp;
+                    <button type="reset"  (click)="cleanLoc()" class="btn btn-primary ">Clear</button>
+                </div>
+                
+            </form>
+        </div>
+
+        <div class="container d-flex justify-content-center bg-white col-2 mt-4 p-0 rounded text-danger d-none" id="noResult">
+      <h6>No Results Available</h6>
+        </div>
+
+        <div id="listings" class="container mt-5 text-center bg-white col-10 d-flex justify-content-center">
+            <table id="searchTable" class="table table-striped  d-none" >
+                <thead id="tabhead">
+                <th class="col-1">#</th>
+                <th class="col-2">Image</th>
+                <th class="col-5" >Business Name</th>
+                <th class="col-2">Rating</th>
+                <th class="col-2" >Distance(miles)</th>
+                </thead>
+                
+                <tbody id="tabbody">
+                    <tr *ngFor="let listingEle of listingObj; let i=index" (click)="prepareDataset(listingEle.id, listingEle.name)">
+                        <td>{{i+1}}</td>
+                        <td><img src={{listingEle.image_url}} width="100%" height="auto"></td>
+                        <td>{{listingEle.name}}</td>
+                        <td>{{listingEle.rating}}</td>
+                        <td>{{listingEle.distance}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>  
+        
+        <div id="details" class="container d-none d-flex justify-content-center col-6">
+               
+                <div class=" mb-5 p-0 " id="detailsHeader">
+                    <div class="row p-0 m-0 bg-white"> 
+                        <span class="bi bi-arrow-left fa-2x " role="button" (click)="arrowClick()"></span>
+                        <h3 class="text-center m-0 p-0 " >{{name}}</h3>
+                    </div>
+                   
+                        <mat-tab-group mat-align-tabs="center" id="detailsHeader">
+                          
+                            <mat-tab label="Business Details" class="mat-warning">
+                            <div class="row bg-white">
+                                <div class="text-center  d-flex justify-content-center col-6 p-2 detailVal" *ngIf="bAddress">
+                                    <span>  <h5>Address</h5>
+                                        {{bAddress}}</span>
+                                   
+                                </div>
+                                <div class="text-center d-flex justify-content-center  col-6 p-2 detailVal" *ngIf="bCategory">
+                                    <span clss="p-0"> <h5>Category</h5>
+                                        {{bCategory}} </span>
+                                </div>
+                                <div class="text-center d-flex justify-content-center col-6 p-2 detailVal" *ngIf="bPhone">
+                                    <span><h5>Phone</h5>
+                                        {{bPhone}}</span>
+                                </div>
+                                <div class="text-center d-flex justify-content-center col-6 p-2 detailVal" *ngIf="bPrice">
+                                    <span>
+                                        <h5>Price Range</h5>
+                                        {{bPrice}}
+                                    </span>
+                                </div>
+                                <div class="text-center d-flex justify-content-center col-6 p-2 detailVal" *ngIf="bStatus" id="statusId">
+                                    <span><h5>Status</h5>
+                                        {{bStatus}}</span>
+                                    
+                                </div>
+                                <div class="text-center d-flex justify-content-center col-6 p-2 detailVal" *ngIf="bMoreInfo">
+                                    <span><h5>Visit yelp for more info</h5>
+                                        <a [href]="bMoreInfo" target="_blank">Business Link</a></span>
+                                </div>
+
+                            </div>
+
+                            <div class="d-flex justify-content-center pt-2  bg-white" >
+                                <button  type="button" class="btn btn-danger" data-bs-toggle="modal" (click)="openModal()" id="resModal">Reservation</button>
+                                <button class="btn btn-primary d-none" value="cancel" (click)="cancelReservation()" id="cancel">Cancel reservation</button>
+                            </div>
+                           
+                            <div class="d-flex justify-content-center bg-white pb-2 pt-2">
+                                Share on:  &nbsp; <a href ="https://twitter.com/intent/tweet?text=check%20{{name}}%20on%20yelp.%20{{bMoreInfo}}" target="_blank"> <img src="assets/twitter-logo.png" width="32px"></a> &nbsp; &nbsp;
+                                <a href="http://facebook.com/sharer.php?u={{bMoreInfo}}"  target="_blank"><img src="assets/facebook-logo.png"  width="32px"></a>
+                            </div>
+                            <div class="container d-flex justify-content-center bg-white p-2" *ngIf="photos0">
+                                <div id="carouselControl" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                      <div class="carousel-item active" *ngIf="photos0">
+                                        <img [src]="photos0" class="d-block" alt="..." width="300px" height="200px">
+                                      </div>
+                                      <div class="carousel-item" *ngIf="photos1">
+                                        <img [src]="photos1" class="d-block" alt="..." width="300px" height="200px">
+                                      </div>
+                                      <div class="carousel-item" *ngIf="photos2">
+                                        <img [src]="photos2" class="d-block" alt="..." width="300px" height="200px">
+                                      </div>
+                                    </div>
+                                    <a class="carousel-control-prev d-flex justify-content-start" role="button" href="#carouselControl" data-slide="prev">
+                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                      <span class="sr-only"></span>
+                                    </a>
+                                    <a class="carousel-control-next d-flex justify-content-end" role="button" href="#carouselControl" data-slide="next">
+                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                      <span class="sr-only"></span>
+                                    </a>
+                                  </div>
+                                
+                            </div>
+                            
+                            </mat-tab>
+                            <mat-tab label="Map" class="mat-warning">
+                                <div class="my-google-map">
+                                    <div class="my-google-map">
+                                        <google-map [options]="mapOptions">
+                                           <map-marker [position]="marker.position"></map-marker>
+                                        </google-map>
+                                     </div>
+                                  </div>
+                            </mat-tab>
+
+                            <mat-tab label="Review" class="mat-warning">
+                                <div id="reviewId">
+                                    <table class="table table-striped bg-white">
+                                        <tbody>
+                                            <tr *ngFor="let rev of reviewData">
+                                            <p><b>{{ rev.name }}</b><br>
+                                                {{ rev.rating }}/5
+                                                 <br><br>
+                                                {{ rev.text }}
+                                                <br><br>
+                                                 {{ rev.tc }}</p>    
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </mat-tab>
+                          </mat-tab-group>
+            </div>
+           
+        </div>
+    </div>
+    <div class="container-fluid d-flex justify-content-center"> 
+        <div class="row">
+        <div class="modal"  tabindex="-1" role="dialog"[ngStyle]="{'display':displayStyle}">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationFormLabel">Reservation Form</h5>
+                </div>
+                <div class="modal-body ">
+                   <form (ngSubmit)="submitReservation()" class="row needs-validation" >
+                    <div class="form-group row ">
+                        <label for="Email" class="form-label" >Email</label>
+                        <input name="email" id="userEmail" type="email" class="form-control" (input)="valEma()" [ngClass]="email_valid == false ? 'is-invalid': '' " required >
+                        <div class="invalid-feedback" *ngIf="!email_valid">
+                            Please fill email
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row ">
+                        <label for="date" class="form-label"  >Date</label>
+                        <input name="date" id="rdate" type="date" class="form-control" (input)="valDate()" placeholder="mm/dd/yyyy" required min="{{today}}" [ngClass]="date_valid == false ? 'is-invalid': '' " >
+                        <div class="invalid-feedback" *ngIf="!date_valid">
+                            Please select date
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label for="time" class="form-label"  >Time</label>
+                        <div class="col-3">
+                            <select name="rTimeH" class="form-control" id="tHId" required [ngClass]="hour_valid == false ? 'is-invalid': '' " ngModel >
+                                <option value=10>10</option>
+                                <option value=11>11</option>
+                                <option value=12>12</option>
+                                <option value=13>13</option>
+                                <option value=14>14</option>
+                                <option value=15>15</option>
+                                <option value=16>16</option>
+                                <option value=17>17</option>
+                            </select>
+                            <div class="invalid-feedback" *ngIf="!hour_valid">
+                                Please select Hours
+                            </div>
+                        </div>:
+                        <div class="col-3">
+                            <select name="rMTime" class="form-control" id="tMId" [ngClass]="hour_valid == false ? 'is-invalid': '' " ngModel>
+                                <option value=00>00</option>
+                                <option value=15>15</option>
+                                <option value=30>30</option>
+                                <option value=45>45</option>
+                            </select>
+                            <div class="invalid-feedback" *ngIf="!min_valid">
+                                Please select Minutes
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <i class="bi bi-clock"></i>
+                        </div>  
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-danger" value="submit">Submit</button>
+                    </div>
+                  
+                   </form>
+                   
+                  </div>
+    
+                  <div class="modal-footer d-flex justify-content-end">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+                  </div>
+            </div>
+    
+           
+        </div>
+    </div></div>
+   
+    
+    
+
+

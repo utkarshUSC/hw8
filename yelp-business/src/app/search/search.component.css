@@ -1,0 +1,95 @@
+.required:after {
+    content:"*";
+    color: red;
+    vertical-align: top;
+  }
+
+  ::ng-deep .mat-tab-group {
+    background-color: rgb(238, 180, 23) !important;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+.modal {
+  margin: 0 auto;
+  left: 30%;
+  width:30%;
+}
+/* 
+/* .modal{
+  width: 50%; 
+} */ 
+
+@media only screen and (max-width:767px) {
+
+  #maincontainer {
+    margin: 0px;
+    width: 320px;
+    padding: 2px;
+    height: 100%;
+  }
+  #listings{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 340px;
+    font-size: 12px;
+    height: 100%;
+  }
+  #details {
+    width:320px;
+    height: 100%;
+  }
+  #detailsHeader{
+    width: 320px;
+    height: 100%;
+  }
+  .detailVal{
+    width:340px;
+  }
+  .form-group {
+    width: 100%;
+  }
+  #d{
+    width: 100%;
+  }
+  #c {
+    width: 75%
+  }
+  .mat-label{
+    font-size: 12px;
+  }
+  .cPhoto{
+    width: 270px;
+    height: 180px;
+  }
+  .rFormIn {
+    width: 100%
+  }
+  
+  .timeSize{
+    width: 35%;
+  
+  }
+  .divInpR{
+    width: 100%;
+  }
+  #tHId{
+    padding-right: 5px;
+
+  }
+  #tHId{
+    padding-left: 5px;
+
+  }
+  #divDist{
+    width: 100%;
+  }
+  #divDistB{
+    width: 100%;
+  }
+  .modal {
+    width: 100%;
+  left:0%;
+    }
+}

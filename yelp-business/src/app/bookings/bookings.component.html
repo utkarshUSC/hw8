@@ -1,0 +1,29 @@
+
+    <div id="bookcontainer" class="row justify-content-center mt-5 mb-5 ml-0 mr-0"> 
+        <div class="col-10 m-5" *ngIf="bookings.length" id="bookcontainerB">
+            <table id="bookingTable" class="table table-hover table-responsive bg-white" >
+                <thead>
+                    <th >#</th>
+                    <th >Business Name</th>
+                    <th  >Date</th>
+                    <th >Time</th>
+                    <th  >E-Mail</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let booking of bookings; let i=index" >
+                      <td> {{i+1}}</td>
+                      <td>{{booking.name}}</td>
+                    <td>{{booking.date}}</td>
+                    <td>{{booking.hour}}:{{booking.min}}</td>
+                        <td>{{booking.email}}</td>
+                            <td><i class="bi bi-trash" role="button" (click)="deleteBooking(i)"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bg-white d-flex justify-content-center" *ngIf="!bookings.length">
+            <h2 class="text-danger">No reservations to show</h2>
+        </div>
+        
+        </div>
