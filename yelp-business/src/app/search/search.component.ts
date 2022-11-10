@@ -2,7 +2,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, FormArray, NgForm } from '@angular/forms';
-import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
+import axios from 'axios';
 import { debounceTime, tap, switchMap, finalize, distinctUntilChanged, filter } from 'rxjs/operators';
 import { NgIf } from '@angular/common';
 
